@@ -54,41 +54,49 @@ public class FileDataStorageManagerTest {
     public void insertFile() {
         OCFile root = storageManager.getFileByPath("/");
 
-        OCFile newFile = new OCFile("/1.txt");
-        newFile.setParentId(root.getFileId());
-
-        storageManager.saveFile(newFile);
-
+        insertFiles(1);
         assertEquals(1, storageManager.getFolderContent(root, false).size());
     }
 
     @Test
-    public void insertManyFiles() {
+    public void insertManyFilesAndDelete() {
+        int count = 100;
+        insertFiles(count);
+
+        OCFile root = storageManager.getFileByPath("/");
+        assertEquals(count, storageManager.getFolderContent(root, false).size());
+
+        // save folder and remove all files
+        storageManager.saveFolder(root, new ArrayList<>(), storageManager.getFolderContent(root, false));
+        assertEquals(0, storageManager.getFolderContent(root, false).size());
+    }
+
+    @Test
+    public void insertManyFilesAndDelete2() {
+        int count = 100;
+        insertFiles(count);
+
+        OCFile root = storageManager.getFileByPath("/");
+        assertEquals(count, storageManager.getFolderContent(root, false).size());
+
+        storageManager.deleteAllFiles();
+        assertEquals(0, storageManager.getFolderContent(root, false).size());
+    }
+
+    private void insertFiles(int count) {
         OCFile root = storageManager.getFileByPath("/");
         assertEquals(0, storageManager.getFolderContent(root, false).size());
 
-        int count = 5000;
         for (int i = 0; i < count; i++) {
             Log_OC.d(this, "insert: " + i);
             OCFile newFile = new OCFile("/" + i + ".txt");
+            newFile.setRemoteId("oc12300" + i);
             newFile.setParentId(root.getFileId());
 
             storageManager.saveFile(newFile);
         }
 
         assertEquals(count, storageManager.getFolderContent(root, false).size());
-    }
-
-    @Test
-    public void insertManyFilesAndDelete() {
-        insertManyFiles();
-
-        OCFile root = storageManager.getFileByPath("/");
-        assertEquals(5000, storageManager.getFolderContent(root, false).size());
-
-        // save folder and remove all files
-        storageManager.saveFolder(root, new ArrayList<>(), storageManager.getFolderContent(root, false));
-        assertEquals(0, storageManager.getFolderContent(root, false).size());
     }
 
     @After
