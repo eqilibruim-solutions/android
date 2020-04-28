@@ -57,7 +57,8 @@ docker exec uiComparison /bin/sh -c "su www-data -c \"php /var/www/html/occ circ
 docker exec uiComparison /bin/sh -c "/usr/local/bin/run.sh"
 
 ## update/create all screenshots
-./gradlew executeScreenshotTests -Precord
+./gradlew gplayDebugExecuteScreenshotTests -Precord
+./gradlew gplayDebugDownloadScreenshots
 
 ## update screenshots in a class
 #./gradlew executeScreenshotTests \
