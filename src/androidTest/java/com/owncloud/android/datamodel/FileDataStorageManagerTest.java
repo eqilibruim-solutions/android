@@ -28,8 +28,11 @@ import android.content.Context;
 
 import com.owncloud.android.lib.common.utils.Log_OC;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.ArrayList;
 
 import androidx.test.InstrumentationRegistry;
 
@@ -60,10 +63,11 @@ public class FileDataStorageManagerTest {
     }
 
     @Test
-    public void insertManyFile() {
+    public void insertManyFiles() {
         OCFile root = storageManager.getFileByPath("/");
+        assertEquals(0, storageManager.getFolderContent(root, false).size());
 
-        int count = 20000;
+        int count = 5000;
         for (int i = 0; i < count; i++) {
             Log_OC.d(this, "insert: " + i);
             OCFile newFile = new OCFile("/" + i + ".txt");
@@ -72,7 +76,26 @@ public class FileDataStorageManagerTest {
             storageManager.saveFile(newFile);
         }
 
-
         assertEquals(count, storageManager.getFolderContent(root, false).size());
+    }
+
+    @Test
+    public void insertManyFilesAndDelete() {
+        insertManyFiles();
+
+        OCFile root = storageManager.getFileByPath("/");
+        assertEquals(5000, storageManager.getFolderContent(root, false).size());
+
+        // save folder and remove all files
+        storageManager.saveFolder(root, new ArrayList<>(), storageManager.getFolderContent(root, false));
+        assertEquals(0, storageManager.getFolderContent(root, false).size());
+    }
+
+    @After
+    public void after() {
+        OCFile root = storageManager.getFileByPath("/");
+        storageManager.deleteAllFiles();
+
+        assertEquals(0, storageManager.getFolderContent(root, false).size());
     }
 }
