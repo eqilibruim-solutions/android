@@ -68,7 +68,7 @@ public class UploadStorageManagerTest {
 
         insertUploads(Accounts[0], size);
 
-        assertEquals(size + 1, uploadsStorageManager.getAllStoredUploads().length);
+        assertEquals(size, uploadsStorageManager.getAllStoredUploads().length);
     }
 
     @Test(expected = IllegalArgumentException.class)
