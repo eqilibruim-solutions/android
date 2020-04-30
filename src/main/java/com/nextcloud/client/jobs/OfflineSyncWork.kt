@@ -60,7 +60,7 @@ class OfflineSyncWork constructor(
 
     override fun doWork(): Result {
         var wakeLock: WakeLock? = null
-        if (!powerManagementService.isPowerSavingEnabled && !connectivityService.isInternetWalled) {
+        if (!powerManagementService.isPowerSavingEnabled && !connectivityService.isServerAvailable) {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
                 val powerManager = context.getSystemService(Context.POWER_SERVICE) as PowerManager
                 val wakeLockTag = MainApp.getAuthority() + WAKELOCK_TAG_SEPARATION + TAG

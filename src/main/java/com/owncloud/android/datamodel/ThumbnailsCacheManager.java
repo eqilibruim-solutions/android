@@ -385,7 +385,7 @@ public final class ThumbnailsCacheManager {
                     }
                 } else {
                     new Thread(() -> {
-                        if (connectivityService.isInternetWalled()) {
+                        if (connectivityService.isServerAvailable()) {
                             if (fileFragment instanceof PreviewImageFragment) {
                                 ((PreviewImageFragment) fileFragment).setNoConnectionErrorMessage();
                             }
