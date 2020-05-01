@@ -17,28 +17,12 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
-package com.nextcloud.client.network;
+package com.nextcloud.client.device
 
 /**
- * This service provides information about current network connectivity
- * and server reachableity.
+ * This class exposes battery status information
+ * in platform-independent way.
+ *
+ * @see [android.os.BatteryManager]
  */
-public interface ConnectivityService {
-
-    /**
-     * Check if server is accessible by issuing HTTP status check request.
-     * Since this call involves network traffic, it should not be called
-     * on a main thread.
-     *
-     * @return True if server is reachable and operational, false otherwise
-     */
-    boolean isServerAvailable();
-
-    /**
-     * Get current network connectivity status.
-     *
-     * @return Network connectivity status in platform-agnostic format
-     */
-    Connectivity getConnectivity();
-}
+data class BatteryStatus(val isCharging: Boolean = false, val level: Int = 0)
